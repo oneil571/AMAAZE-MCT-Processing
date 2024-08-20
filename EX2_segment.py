@@ -23,7 +23,7 @@ REDO_ISO = False
 PLOTTING = True
 SCPPLOT = True
 
-scan_num = 4#int(os.getcwd().split('/')[-1].split('_')[-1])
+scan_num = 2#int(os.getcwd().split('/')[-1].split('_')[-1])
 
 
 
