@@ -26,24 +26,24 @@ This is faster!!
 
 def parse_option():
     parser = argparse.ArgumentParser('inputs')
-    parser.add_argument('--folder', type=str, 
-                        help='what scan are we doing? enter folder path.')  
-    parser.add_argument('--iso', type=int, 
-                        help='isolevel for surfacing')  
+    parser.add_argument('--folder', type=str, required=True,
+                        help='what scan are we doing? enter folder path.')
+    parser.add_argument('--iso', type=int, required=True,
+                        help='isolevel for surfacing')
     parser.add_argument('--meshsubfolder', type=str,  default ='./Meshes',
-                        help='where are the meshes to go?')  
+                        help='where are the meshes to go?')
     parser.add_argument('--nworkers', type=int,  default =0,
                         help='how many cores to use for parallelization. 0 = use almost all (85%)')
     parser.add_argument('--padding',type=int,default=50,
                         help = 'how much to pad extracted bounding boxes')
-    
+
     return parser.parse_args()
 
 
 if __name__ == '__main__':
     opt = parse_option()
 
-    
+
     start = timeit.default_timer()
 
 
@@ -109,7 +109,7 @@ if __name__ == '__main__':
 
             with NpyAppendArray(os.path.join(outpath,fname), delete_if_exists=(i==zrng[0])) as npaa:
                 npaa.append( (im[rowrng2[0]:rowrng2[1],colrng2[0]:colrng2[1]].T)[None,:,:] )
-            return 
+            return
 
         if opt.nworkers==0:
             num_cores = int(multiprocessing.cpu_count()*.85)
@@ -136,7 +136,7 @@ if __name__ == '__main__':
                     infot[:,4] = np.minimum(infot[:,4] +PADDING,im.shape[0])
                     infot[:,6] = np.minimum(infot[:,6] +PADDING,im.shape[1])
 
-                
+
                 Parallel(n_jobs=num_cores)(delayed(subproc)(i,j,infot,zrng,im) for j in range(infot.shape[0]))
 
                 '''
@@ -149,7 +149,7 @@ if __name__ == '__main__':
                     with NpyAppendArray(os.path.join(outpath,fname), delete_if_exists=(i==zrng[0])) as npaa:
                         npaa.append( (im[rowrng2[0]:rowrng2[1],colrng2[0]:colrng2[1]].T)[None,:,:] )
                 '''
-                    
+
 
     #surface + dicom overview
     for i in range(info.shape[0]):
@@ -166,10 +166,10 @@ if __name__ == '__main__':
 
 
     stop = timeit.default_timer()
-    print('subvol extraction runtime b: ', stop - start)
+    print('subvol extraction runtime: ', stop - start)
 
     print('starting DICOM surfacing')
-    dicom.surface_bones_parallel(outpath, iso=isolevel, write_gif=False,ncores=min(20,multiprocessing.cpu_count()))
+    dicom.surface_bones_parallel(outpath, iso=isolevel, write_gif=False,ncores=min(num_cores,20,multiprocessing.cpu_count()))
 
         #surface w. marching cubes
 

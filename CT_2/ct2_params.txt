@@ -1,0 +1,11 @@
+AUTO_ROT= True #used for scan 5,7 only so far
+AUTO_SEG= True
+INPUT_ROWS= False     #used for scan 6
+INPUT_COLS= False     #used for scan 6
+TIER_THRESH= [0,31,190,379]
+INVERT= False      #only the variable after the first space is taken
+THRESH0= 5e5
+THRESH1= 5e5
+#everything after this line (line 9) is optional.
+
+ISO_THRESHOLDS= [11000,12500,17000]
