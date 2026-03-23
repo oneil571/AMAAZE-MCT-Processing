@@ -1,0 +1,5 @@
+ang2rot: 206.5 #25
+rowrng: [30,260] #anything commented out like this will be ignored
+colrng: [35,265] #likewise here. Just be sure to have a space between this & the important stuff
+
+
